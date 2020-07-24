@@ -1,0 +1,30 @@
+
+<!-- App Header-->
+
+<div class="ng-header">
+  <div class="ng-header-left left">
+  </div>
+  <div class="ng-header-right right">
+      <div class="ng-header-right-item right">
+          <a class="icon" (click)="logout()"><i class="fa fa-sign-out-alt"></i></a>
+      </div>
+      <div class="ng-header-right-item right">
+          <a class="icon"><span [innerHtml]="email" class="user-name"></span><i class="fa fa-user"></i></a>
+      </div>
+  </div>
+</div>
+
+<div>
+  <p-sidebar [visible]="true" position="left" [showCloseIcon]="false" styleClass="np-menubar" [modal]="false">
+    <ul class="np-menu">
+        <li *ngFor="let menu of items">
+            <a (click)="handleMenuItemClick(menu)" [ngClass]="{'active': selectedItem == menu.label}">
+                {{menu.label}}
+            </a>
+        </li>
+    </ul>
+  </p-sidebar>
+
+
+  <router-outlet></router-outlet>
+</div>

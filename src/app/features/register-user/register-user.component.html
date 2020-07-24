@@ -1,0 +1,87 @@
+<div class="user-regisration">
+  <div class="p-grid p-nogutter p-justify-center p-align-center" style="height:100%">
+
+    <div class="p-col-5">
+      <form [formGroup]="userform" (ngSubmit)="handleRegister()">
+        <p-panel header="Register">
+          <br/>
+          <br/>
+
+          <div class="p-grid p-justify-center p-align-center">
+
+            <br/>
+          <div class="p-col-8" *ngIf="isError">
+            <p-message severity="error" text="Error Registering the user. Please retry."></p-message>
+          </div>
+          <br/>
+
+            <div class="p-col-8">
+              <div class="ui-inputgroup">
+                <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+                <input id="float-input-firstname" type="text" size="30" pInputText formControlName="firstName"
+                  placeholder="First Name" required>
+              </div>
+            </div>
+            <div class="p-col-8" *ngIf="userform.controls['firstName'].errors && userform.controls['firstName'].dirty">
+              <p-message severity="error" text="First name is required"></p-message>
+            </div>
+
+            <div class="p-col-8">
+              <div class="ui-inputgroup">
+                <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+                <input id="float-input-lastname" type="text" size="30" pInputText formControlName="lastName"
+                       placeholder="Last Name" required>
+              </div>
+            </div>
+            <div class="p-col-8" *ngIf="userform.controls['lastName'].errors && userform.controls['lastName'].dirty">
+              <p-message severity="error" text="Last name is required"></p-message>
+            </div>
+
+            <div class="p-col-8">
+              <div class="ui-inputgroup">
+                <span class="ui-inputgroup-addon"><i class="fa fa-at"></i></span>
+                <input id="float-input-emailid" type="email" size="30" pInputText formControlName="emailId"
+                       placeholder="Parent Email Id" required>
+              </div>
+            </div>
+            <div class="p-col-8" *ngIf="userform.controls['emailId'].errors && userform.controls['emailId'].dirty">
+              <p-message severity="error" text="Email is required"
+                         *ngIf="userform.controls['emailId'].errors['required']"></p-message>
+              <p-message severity="error" text="Email is invalid" *ngIf="userform.controls['emailId'].errors['email']">
+              </p-message>
+            </div>
+
+            <div class="p-col-8">
+              <div class="ui-inputgroup">
+                <span class="ui-inputgroup-addon"><i class="fa fa-key"></i></span>
+                <input id="float-input-password" type="password" size="30" pInputText formControlName="password"
+                  placeholder="Password" required>
+              </div>
+            </div>
+            <div class="p-col-8" *ngIf="userform.controls['password'].errors && userform.controls['password'].dirty">
+              <p-message severity="error" text="Password is required"
+                *ngIf="userform.controls['password'].errors['required']"></p-message>
+              <p-message severity="error" text="Minimum 6 characters required."
+                *ngIf="userform.controls['password'].errors['minlength'] "></p-message>
+            </div>
+
+          </div>
+
+          <br/>
+          <br/>
+
+          <div class="p-grid p-justify-center p-align-center">
+            <div class="p-col-3">
+              <button pButton type="button" label="Register" class="ui-button-raised" [disabled]="!userform.valid"
+                (click)="handleRegister()"></button>
+            </div>
+            <div class="p-col-3">
+              <button pButton type="button" label="Login" class="ui-button-raised"
+                (click)="routeToLogin()"></button>
+            </div>
+          </div>
+        </p-panel>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="login-panel">
+  <div class="p-grid p-nogutter p-justify-center p-align-center" style="height:100%">
+    <div class="p-col-5">
+      <p-panel header="Login">
+        <br/>
+        <br/>
+
+        <div class="p-grid p-justify-center p-align-center">
+
+          <div class="p-col-8" *ngIf="isError">
+          <p-message severity="error" text="Error Registering the user. Please retry."></p-message>
+        </div>
+
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+          <div class="p-col-8 p-justify-center p-align-center">
+            <div class="ui-inputgroup">
+              <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+              <input id="input-username" type="text" size="30" pInputText [(ngModel)]="userName"
+                placeholder="Enter Parent Email Id">
+            </div>
+          </div>
+
+          <div class="p-col-8 p-justify-center p-align-center">
+            <div class="ui-inputgroup">
+              <span class="ui-inputgroup-addon"><i class="fa fa-key"></i></span>
+              <input id="input-password" type="password" size="30" pInputText [(ngModel)]="password"
+                placeholder="Enter Password">
+            </div>
+          </div>
+
+        </div>
+
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+        <div class="p-grid p-justify-center p-align-center">
+          <div class="p-col-3">
+            <button pButton type="button" label="Login" class="ui-button-raised" (click)="handleLogin()"></button>
+          </div>
+
+          <div class="p-col-3">
+            <button pButton type="button" label="Register" class="ui-button-raised"
+              [routerLink]="['/register']"></button>
+          </div>
+        </div>
+
+      </p-panel>
+    </div>
+  </div>
+</div>
