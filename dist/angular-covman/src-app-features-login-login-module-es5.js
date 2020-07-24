@@ -320,19 +320,13 @@
       !*** ./src/app/features/login/login.module.ts ***!
       \************************************************/
 
-    /*! exports provided: HttpLoaderFactory, LoginModule */
+    /*! exports provided: LoginModule */
 
     /***/
     function srcAppFeaturesLoginLoginModuleTs(module, __webpack_exports__, __webpack_require__) {
       "use strict";
 
       __webpack_require__.r(__webpack_exports__);
-      /* harmony export (binding) */
-
-
-      __webpack_require__.d(__webpack_exports__, "HttpLoaderFactory", function () {
-        return HttpLoaderFactory;
-      });
       /* harmony export (binding) */
 
 
@@ -369,28 +363,6 @@
       var src_app_app_common_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(
       /*! src/app/app.common.module */
       "./src/app/app.common.module.ts");
-      /* harmony import */
-
-
-      var _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(
-      /*! @ngx-translate/core */
-      "./node_modules/@ngx-translate/core/__ivy_ngcc__/fesm2015/ngx-translate-core.js");
-      /* harmony import */
-
-
-      var _angular_common_http__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(
-      /*! @angular/common/http */
-      "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
-      /* harmony import */
-
-
-      var _ngx_translate_http_loader__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(
-      /*! @ngx-translate/http-loader */
-      "./node_modules/@ngx-translate/http-loader/__ivy_ngcc__/fesm2015/ngx-translate-http-loader.js");
-
-      function HttpLoaderFactory(http) {
-        return new _ngx_translate_http_loader__WEBPACK_IMPORTED_MODULE_7__["TranslateHttpLoader"](http);
-      }
 
       var LoginModule = function LoginModule() {
         _classCallCheck(this, LoginModule);
@@ -403,21 +375,13 @@
         factory: function LoginModule_Factory(t) {
           return new (t || LoginModule)();
         },
-        imports: [[_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], src_app_features_login_login_routing__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"], src_app_app_common_module__WEBPACK_IMPORTED_MODULE_4__["AppCommonModule"], _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__["TranslateModule"].forChild({
-          loader: {
-            provide: _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__["TranslateLoader"],
-            useFactory: HttpLoaderFactory,
-            deps: [_angular_common_http__WEBPACK_IMPORTED_MODULE_6__["HttpClient"]]
-          },
-          isolate: false
-        })], _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__["TranslateModule"]]
+        imports: [[_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], src_app_features_login_login_routing__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"], src_app_app_common_module__WEBPACK_IMPORTED_MODULE_4__["AppCommonModule"]]]
       });
 
       (function () {
         (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](LoginModule, {
           declarations: [src_app_features_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"]],
-          imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], src_app_features_login_login_routing__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"], src_app_app_common_module__WEBPACK_IMPORTED_MODULE_4__["AppCommonModule"], _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__["TranslateModule"]],
-          exports: [_ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__["TranslateModule"]]
+          imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], src_app_features_login_login_routing__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"], src_app_app_common_module__WEBPACK_IMPORTED_MODULE_4__["AppCommonModule"]]
         });
       })();
       /*@__PURE__*/
@@ -427,16 +391,9 @@
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LoginModule, [{
           type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
           args: [{
-            imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], src_app_features_login_login_routing__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"], src_app_app_common_module__WEBPACK_IMPORTED_MODULE_4__["AppCommonModule"], _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__["TranslateModule"].forChild({
-              loader: {
-                provide: _ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__["TranslateLoader"],
-                useFactory: HttpLoaderFactory,
-                deps: [_angular_common_http__WEBPACK_IMPORTED_MODULE_6__["HttpClient"]]
-              },
-              isolate: false
-            })],
+            imports: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], src_app_features_login_login_routing__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"], src_app_app_common_module__WEBPACK_IMPORTED_MODULE_4__["AppCommonModule"]],
             declarations: [src_app_features_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"]],
-            exports: [_ngx_translate_core__WEBPACK_IMPORTED_MODULE_5__["TranslateModule"]]
+            exports: []
           }]
         }], null, null);
       })();

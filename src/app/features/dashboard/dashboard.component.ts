@@ -9,7 +9,7 @@ import { User } from 'src/app/common/models/user.model';
 })
 export class DashboardComponent implements OnInit {
 
-  welcomeMessage: any[] = [];
+  welcomeMessage: string;
   loggedInUser: User;
   role: string;
 
@@ -20,9 +20,11 @@ export class DashboardComponent implements OnInit {
     this.loggedInUser = this.loggedUserService.loggedInUser();
     this.role = this.loggedUserService.loggedInRole();
 
+    console.log(this.loggedInUser);
+    console.log(this.role);
+
     if(this.role=='PARENT') {
-      let parentName = this.loggedInUser.firstName + " m " + this.loggedInUser.lastName;
-      this.welcomeMessage.push({severity:'info', summary:"Welcome, ", detail:parentName});
+      this.welcomeMessage = this.loggedInUser.firstName + " " + this.loggedInUser.lastName;
     }
   }
 
