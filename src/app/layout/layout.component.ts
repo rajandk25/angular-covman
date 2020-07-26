@@ -47,13 +47,19 @@ export class LayoutComponent implements OnInit {
         if(role=='PARENT') {
             return [
                 {
-                    label: 'Home',  routerLink: '/main/dashboard'
+                    label: 'Home',  routerLink: '/parent/dashboard'
                 },
                 {
-                    label: 'Employees',  routerLink: '/main/employees'
+                    label: 'Incidents',  routerLink: '/parent/incidents'
+                }
+            ]
+        } else if(role=='TEACHER') {
+            return [
+                {
+                    label: 'Home',  routerLink: '/teachers/dashboard'
                 },
                 {
-                    label: 'Departments', routerLink: '/main/departments'
+                    label: 'Incidents',  routerLink: '/teachers/incidents'
                 }
             ]
         }

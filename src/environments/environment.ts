@@ -6,7 +6,11 @@ export const environment = {
   production: false,
   version: '1.0.0',
   parents: 'http://localhost:8090/covman/parents',
-  users: 'http://localhost:8090/covman/users'
+  students: 'http://localhost:8090/covman/students',
+  users: 'http://localhost:8090/covman/users',
+  teachers: 'http://localhost:8090/covman/employees/teachers',
+  questions: 'http://localhost:8090/covman/symptoms/questions',
+  checkIn: 'http://localhost:8090/covman/symptoms/checkIn',
 };
 
 /*

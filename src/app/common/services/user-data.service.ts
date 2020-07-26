@@ -4,6 +4,8 @@ import {Observable, throwError} from 'rxjs';
 import { Parent } from './../models/parent.model';
 import { environment } from './../../../environments/environment';
 import { map, catchError } from 'rxjs/operators';
+import { Employee } from 'src/app/common/models/employee.model';
+import { Student } from './../models/student.model';
 
 @Injectable({
     providedIn: 'root',
@@ -48,6 +50,40 @@ export class UserDataService {
         map(response => {return response}),
         catchError(this.handleError)
       );
+    }
+
+    //get parent by its user id
+    public getParentByUserId(userId: number): Observable<Parent> {
+      let url = environment.parents + "/user/" + userId;
+      return this.httpClient.get<Parent>(url, {
+        headers: this.corsHeaders
+      })
+      .pipe(
+        map(response => {return response}),
+        catchError(this.handleError)
+      );
+    }
+
+    //get all the teachers for parent to choose from
+    public getAllTeachers(): Observable<Employee[]> {
+      let url = environment.teachers;
+      return this.httpClient.get<Employee[]>(url, {
+        headers: this.corsHeaders
+      })
+      .pipe(
+        map(response => {return response}),
+        catchError(this.handleError)
+      );
+    }
+
+    public addStudent(student: Student) : Observable<Student> {
+      return this.httpClient.post<Student>(environment.students, student, {
+        headers: this.corsHeaders
+      })
+        .pipe(
+          map(response => {return response}),
+          catchError(this.handleError)
+        );
     }
 
     /**

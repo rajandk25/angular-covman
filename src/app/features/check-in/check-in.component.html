@@ -1,0 +1,34 @@
+
+
+<!--Checkin a student-->
+<div class="p-col-8">
+    <form [formGroup]="studentCheckInForm" (ngSubmit)="handleCheckInStudent()">
+      <p-panel header="Check-in Student" *ngIf="student">
+        <div class="ui-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-6">
+                <label for="temperature"><h3>Temperature</h3></label>
+                <input id="temperature" type="text" formControlName="temperature" pInputText> 
+            </div>
+        </div>
+
+        <h3>Please select the symptoms applicable symptom.</h3>
+
+        <ng-template ngFor let-symptom [ngForOf]="symptoms" let-i="index">
+            <div class="p-field-checkbox">
+            <p-checkbox [label]="symptom.symptomQuestion.description" [value]="symptom"
+                    [formControlName]="'check'+i" 
+                    (onChange)="handleDisable($event, symptom.symptomQuestion.description)" [disabled]="symptom.disabled" >
+                </p-checkbox>
+                </div>
+          </ng-template>
+        
+        <div class="p-grid p-justify-right p-align-right">
+          <div class="p-col-3">
+            <br/>
+            <br/>
+            <button pButton type="submit" label="Check In Student" class="ui-button-raised" icon="pi pi-check" iconPos="right"></button>
+          </div>
+        </div>
+      </p-panel>
+    </form>
+  </div>

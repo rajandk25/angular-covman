@@ -2,32 +2,119 @@
 <div class="ui-g dashboard-card">
 
   <div class="ui-g-6 ui-md-12">
-    <p-card styleClass="overview-box-1">
-      Hi there, I am here to see if its starting from left...................................
-    </p-card>
+
+  <p-panel>
+    <p-header>
+        <div class="ui-helper-clearfix">
+         <h1>{{welcomeMessage}}</h1>
+        </div>
+    </p-header>
+
+    <div *ngIf="students && students.length == 0">
+      <br>
+      <h3>Seems like you don't have any students added yet. Please add a student.</h3>
+      <br>
+    </div>
+    <div *ngIf="students && students.length > 0">
+      <br/>
+        <br/>
+        <img class="img-height" src="Card" src="/assets/images/tick.png" *ngIf="!needsAttention">
+        <img class="img-height" src="Card" src="/assets/images/cross.png" *ngIf="needsAttention">
+      <h4 *ngIf="needsAttention">Seems like one of your Students is experiencing Covid like Symptoms. 
+        We suggest you to not send the student to school and get in touch with the teacher.
+      </h4>
+
+      <h4 *ngIf="!needsAttention">All Clear !! Have a nice day. Thanks for helping in these trying times.
+      </h4>
+    </div>
+    <br/>
+    <p-footer>
+      <div class="p-col-3">
+        <button pButton type="button" label="Add Student" class="ui-button-raised" (click)="addStudent()"></button>
+      </div>
+    </p-footer>
+  </p-panel>
+
+      <br>
+      <br>
+      <br>
+
+    <!--Add Student form panel-->
+    <div class="p-col-8" *ngIf="isAdding">
+      <form [formGroup]="studentAddForm" (ngSubmit)="handleAddStudent()">
+        <p-panel header="Add Student">
+          <h3>Please complete all the fields below:</h3>
+          <div class="ui-fluid p-formgrid p-grid">
+              <div class="p-field p-col-12 p-md-6">
+                  <label for="firstname">Firstname</label>
+                  <input id="firstName" type="text" formControlName="firstName" pInputText> 
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                  <label for="lastname">Lastname</label>
+                  <input id="lastName" formControlName="lastName" type="text" pInputText> 
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                  <label for="age">Age</label>
+                  <input id="age" type="number" formControlName="age" pInputText> 
+              </div>
+              <div class="p-field p-col-12 p-md-6">
+                <label for="grade">Grade</label>
+                <input id="grade" type="number" formControlName="grade" pInputText> 
+            </div>
+              <div class="p-field p-col-12 p-md-3">
+                  <label for="teacher">Teacher</label>
+                  <p-dropdown [options]="teachers" formControlName="teacher" placeholder="Select Teacher"></p-dropdown>
+              </div>
+          </div>
+          
+          <div class="p-grid p-justify-right p-align-right">
+            <div class="p-col-3">
+              <br/>
+              <br/>
+              <button pButton type="submit" label="Add" class="ui-button-raised" icon="pi pi-check" iconPos="right"></button>
+            </div>
+          </div>
+        </p-panel>
+      </form>
+    </div>
+
+    <div class="p-col-12">
+    <p-panel *ngIf="(students && students.length > 0) && !isAdding">
+      <p-header><h3>Student Check-in Details</h3></p-header>
+      <p-table [value]="students" [paginator]="false">
+          <ng-template pTemplate="header">
+              <tr>
+                  <th *ngFor="let col of columns">
+                      {{col.header}}
+                  </th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-student>
+              <tr>
+                  <td *ngFor="let col of columns">
+                    <div class="td-center" *ngIf="col.field !== 'checkin' && col.field !== 'isAdmittable'">
+                      {{student[col.field]}}
+                    </div>
+
+                    <div class="td-center" *ngIf="col.field == 'checkin' && !student.symptomAnswers"><a (click)="setStudentToCheckIn(student)">Check-In Required</a></div>
+                    <div class="td-center" *ngIf="col.field == 'checkin' && student.symptomAnswers != null"><a>Complete</a></div>
+
+                    <div class="td-center" *ngIf="col.field == 'isAdmittable'">
+                        <span *ngIf="student[col.field] === true"><img class="img-icon" src="Card" src="/assets/images/tick.png">
+                          </span>
+                        <span *ngIf="student[col.field] === false"><img class="img-icon" src="Card" src="/assets/images/cross.png"></span>
+                    </div>
+                  </td>
+              </tr>
+          </ng-template>
+      </p-table>
+  </p-panel>
+  </div> <!-- table div-->
+
+  <div *ngIf="isCheckingIn">
+  <app-check-in [student]="studentToCheckIn" [checker]="parent.user.role" (checkInResult)="handleCheckInResult($event)"></app-check-in>
   </div>
 
+  </div> <!--main grid-->
 
-  <div class="ui-g-6 ui-md-6">
-    <p-card styleClass="overview-box-1">
-      Overview box 1
-    </p-card>
-  </div>
-  <div class="ui-g-6 ui-md-6">
-    <p-card styleClass="overview-box-2">
-      Overview box2
-    </p-card>
-  </div>
-</div>
-<div class="ui-g">
-  <div class="ui-g-12 ui-md-6">
-    <p-card>
-      Data group 1
-    </p-card>
-  </div>
-  <div class="ui-g-12 ui-md-6">
-    <p-card>
-      Data group 2
-    </p-card>
-  </div>
 </div>

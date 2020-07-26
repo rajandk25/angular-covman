@@ -4,6 +4,7 @@ import { ToastService } from 'src/app/common/services/toast.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { LoggedUserService } from 'src/app/common/services/logged-user.service';
+import { User } from 'src/app/common/models/user.model';
 
 @Component({
   selector: 'app-login',
@@ -30,10 +31,16 @@ export class LoginComponent implements OnInit {
   handleLogin() {
     this.isError = false;
     this.userService.getUser(this.userName, this.password).subscribe(
-      user => {
+      (user: User) => {
         if(user) {
           this.loggedUserService.setUser(user);
-          this.router.navigateByUrl("/parent/dashboard");
+
+          //Navigate to dashboard based on the user's role type
+          if(user.role == 'PARENT') {
+            this.router.navigateByUrl("/parent/dashboard");
+          } else if(user.role == 'TEACHER') {
+            this.router.navigateByUrl("/teachers/dashboard");
+          }
 
         }
       }, 

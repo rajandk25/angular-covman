@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { NgPrimeModule } from 'src/app/app.ngprime.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {DropdownModule} from 'primeng/dropdown';
+import {CheckboxModule} from 'primeng/checkbox';
 
 @NgModule({
     imports: [
@@ -8,7 +10,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     exports: [
         NgPrimeModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        DropdownModule,
+        CheckboxModule
     ],
     declarations: [
     ]

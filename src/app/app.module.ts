@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppCommonModule } from 'src/app/app.common.module';
 import { LayoutComponent } from 'src/app/layout/layout.component';
 import { AuthGuard } from 'src/app/common/gaurds/auth.gaurd';
+import {DropdownModule} from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { AuthGuard } from 'src/app/common/gaurds/auth.gaurd';
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    AppCommonModule
+    AppCommonModule,
+    DropdownModule
   ],
   exports: [],
   providers: [
