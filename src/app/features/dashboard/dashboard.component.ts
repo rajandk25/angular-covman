@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LoggedUserService } from './../../common/services/logged-user.service';
 import { User } from 'src/app/common/models/user.model';
 import { UserDataService } from 'src/app/common/services/user-data.service';
@@ -26,11 +26,19 @@ export class DashboardComponent implements OnInit {
 
   studentAddForm: FormGroup;
   teachers: Array<any> = [];
-  parent: Parent;
-
   studentToCheckIn: Student;
-
   needsAttention: boolean = false;
+
+  canAddStudent: boolean = false;
+
+  @Input()
+  user: any;
+
+  @Output()
+  studentAddResult = new EventEmitter<boolean>();
+
+  @Output()
+  checkInResult = new EventEmitter<boolean>();
 
   readonly columns: any[] = [
     { field: 'firstName', header: 'First Name' },
@@ -46,64 +54,66 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.studentAddForm = this.fb.group({
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
-      grade: new FormControl('', [Validators.required]),
-      age: new FormControl('', [Validators.required]),
-      teacher: new FormControl('', [Validators.required])
-    });
-
     this.loggedInUser = this.loggedUserService.loggedInUser();
-    this.role = this.loggedUserService.loggedInRole();
+    this.role = this.loggedInUser.role;
 
-    console.log(this.loggedInUser);
-    console.log(this.role);
+    console.log("logged in user " + this.loggedInUser);
 
-    if(this.role=='PARENT') {
+    if(this.user) {
+      if(this.role=='PARENT') {
+        this.canAddStudent = true;
+
+        this.studentAddForm = this.fb.group({
+          firstName: new FormControl('', Validators.required),
+          lastName: new FormControl('', Validators.required),
+          grade: new FormControl('', [Validators.required]),
+          age: new FormControl('', [Validators.required]),
+          teacher: new FormControl('', [Validators.required])
+        });
+      }
+
       this.welcomeMessage = "Welcome, " + this.loggedInUser.firstName + " " + this.loggedInUser.lastName;
-
-      this.userDataService.getParentByUserId(this.loggedInUser.id).subscribe((parent: Parent) => {
-        console.log(parent);
-
-        //if parent exists, then get their students
-        if(parent) {
-            this.parent = parent;
-
-            if(parent.students) {
-            for(let student of parent.students) {
-              this.students.push(student);
-            }
-          }
-          console.log(this.students);
-          this.updateStudentEligibility();
-
-            //get all teachers to show in the dropdown to select
-            if(this.teachers.length == 0){
-              this.userDataService.getAllTeachers().subscribe(data =>  {
-                if(data) {
-                  //modify teacher for dropdown
-
-                  for(let teacher of data) {
-                    this.teachers.push({
-                      label : teacher.user.firstName + " " + teacher.user.lastName,
-                      value: teacher
-                    });
-                  }
-
-                  console.log(this.teachers);
-                  console.log(this.isAdding);
-                }
-              });
-            }
-        }
-      });
+      this.initializeWithUserData();
     }
+  }
+
+
+  //This method handles the logic when user is parent
+  //loads user's students, all teachers and update eligibility for each student.
+  initializeWithUserData() {
+      //if parent exists, then get their students
+        if(this.user.students) {
+          for(let student of this.user.students) {
+            this.students.push(student);
+          }
+        }
+        console.log("Parent students: " + this.students);
+        this.updateStudentEligibility();
+
+        //get all teachers to show in the dropdown to select
+        if(this.teachers.length == 0){
+          this.userDataService.getAllTeachers().subscribe(data =>  {
+            if(data) {
+              //modify teacher for dropdown
+
+              for(let teacher of data) {
+                this.teachers.push({
+                  label : teacher.user.firstName + " " + teacher.user.lastName,
+                  value: teacher
+                });
+              }
+            }
+          });
+        }
   }
 
   //shows the add student form
   addStudent() {
       this.isAdding = true;
+  }
+
+  cancelAddStudent() {
+    this.isAdding = false;
   }
 
   handleAddStudent() {
@@ -119,7 +129,11 @@ export class DashboardComponent implements OnInit {
     student.lastName = lastname;
     student.age = age;
     student.grade = grade;
-    student.parent = this.parent;
+
+    //this.user is either Parent / Employee and it has a user object in it
+    if(this.user.user.role == 'PARENT') {
+      student.parent = this.user;
+    }
     student.employee = [teacher];
     student.school = teacher.school;
 
@@ -144,31 +158,28 @@ export class DashboardComponent implements OnInit {
   handleCheckInResult(passed: boolean) {
     if(passed) {
       this.toastService.addSingle("success", "", "Student Checked in successfully");
-      //get students to show refreshed status
-      this.userDataService.getParentByUserId(this.loggedInUser.id).subscribe((parent: Parent) => {
-        console.log(parent);
-
-        //if parent exists, then get their students
-        if(parent) {
-            this.parent = parent;
-
-            if(parent.students) {
-              for(let student of parent.students) {
-                if(student.id == this.studentToCheckIn.id) {
-                  this.studentToCheckIn.symptomAnswers = student.symptomAnswers;
-                  this.isCheckingIn = false;
-                }
-              }
-          }
-        }
-
-        this.updateStudentEligibility();
-      });
+      this.checkInResult.emit(true);
+      this.updateCheckIn();
     } else {
       this.toastService.addSingle("success", "", "Student Check in failed.");
     }
   }
 
+  //handles refresh  for check in
+  updateCheckIn() {
+    if(this.user.students) {
+        for(let student of this.user.students) {
+          if(student.id == this.studentToCheckIn.id) {
+            this.studentToCheckIn.symptomAnswers = student.symptomAnswers;
+            this.isCheckingIn = false;
+          }
+        }
+    }
+
+    this.updateStudentEligibility();
+  }
+
+  //handles if student is allowed to come and if there at least one student with positive symptoms
   updateStudentEligibility() {
     this.needsAttention = false;
     for(let student of this.students) {
@@ -196,8 +207,6 @@ export class DashboardComponent implements OnInit {
         }
       }
     }
-
-    console.log("attn" + this.needsAttention);
   }
 
 }

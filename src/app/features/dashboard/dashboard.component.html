@@ -10,11 +10,18 @@
         </div>
     </p-header>
 
-    <div *ngIf="students && students.length == 0">
+    <div *ngIf="students && students.length == 0 && loggedInUser.role === 'PARENT'">
       <br>
       <h3>Seems like you don't have any students added yet. Please add a student.</h3>
       <br>
     </div>
+
+    <div *ngIf="students && students.length == 0 && loggedInUser.role !== 'PARENT'">
+      <br>
+      <h3>Seems like you don't have any students to manage yet. Please check back yet !!</h3>
+      <br>
+    </div>
+
     <div *ngIf="students && students.length > 0">
       <br/>
         <br/>
@@ -29,7 +36,7 @@
     </div>
     <br/>
     <p-footer>
-      <div class="p-col-3">
+      <div class="p-col-3" *ngIf="canAddStudent">
         <button pButton type="button" label="Add Student" class="ui-button-raised" (click)="addStudent()"></button>
       </div>
     </p-footer>
@@ -68,10 +75,13 @@
           </div>
           
           <div class="p-grid p-justify-right p-align-right">
+            <br/>
+              <br/>
             <div class="p-col-3">
-              <br/>
-              <br/>
               <button pButton type="submit" label="Add" class="ui-button-raised" icon="pi pi-check" iconPos="right"></button>
+            </div>
+            <div class="p-col-3">
+              <button pButton type="button" label="Cancel" class="ui-button-raised" (click)="cancelAddStudent()"></button>
             </div>
           </div>
         </p-panel>
@@ -112,7 +122,7 @@
   </div> <!-- table div-->
 
   <div *ngIf="isCheckingIn">
-  <app-check-in [student]="studentToCheckIn" [checker]="parent.user.role" (checkInResult)="handleCheckInResult($event)"></app-check-in>
+  <app-check-in [student]="studentToCheckIn" [checker]="this.user.role" (checkInResult)="handleCheckInResult($event)"></app-check-in>
   </div>
 
   </div> <!--main grid-->

@@ -1,10 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Student } from './../../common/models/student.model';
-import { SymptomQuestion } from './../../common/models/symptomQuestion.model';
 import { SymptomService } from './../../common/services/symptom-data.service';
-import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { SymptomAnswer } from 'src/app/common/models/symptomAnswer.model';
-import { Event } from '@angular/router';
 import { SymptomAnswers } from './../../common/models/symptomAnswers.model';
 
 @Component({

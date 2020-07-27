@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
-import { TeachersComponent } from './teachers.component';
 import { AppCommonModule } from 'src/app/app.common.module';
 import { CheckInModule } from './../check-in/check-in.module';
-import { TeachersRoutingModule } from './teachers.routing';
-import { DashboardModule } from './../dashboard/dashboard.module';
+import { ParentsComponent } from './parents.component';
+import { DashboardModule } from '../dashboard/dashboard.module';
 import { CommonModule } from '@angular/common';
+import { ParentRoutingModule } from './parent.routing';
 
 @NgModule({
-  declarations: [TeachersComponent],
+  declarations: [ParentsComponent],
   imports: [
     CommonModule,
     AppCommonModule,
     CheckInModule,
-    TeachersRoutingModule,
+    ParentRoutingModule,
     DashboardModule
   ]
 })
-export class TeachersModule { }
+export class ParentsModule { }

@@ -6,6 +6,7 @@ import { environment } from './../../../environments/environment';
 import { map, catchError } from 'rxjs/operators';
 import { Employee } from 'src/app/common/models/employee.model';
 import { Student } from './../models/student.model';
+import { ExposureIncident } from '../models/incident.model';
 
 @Injectable({
     providedIn: 'root',
@@ -27,6 +28,16 @@ export class UserDataService {
      */
     public addParent(parent: Parent) : Observable<Parent> {
       return this.httpClient.post<Parent>(environment.parents, parent, {
+        headers: this.corsHeaders
+      })
+        .pipe(
+          map(response => {return response}),
+          catchError(this.handleError)
+        );
+    }
+
+    addIncident(incident: ExposureIncident): Observable<ExposureIncident> {
+      return this.httpClient.post<ExposureIncident>(environment.employees + "/exposures/", incident, {
         headers: this.corsHeaders
       })
         .pipe(
@@ -64,10 +75,33 @@ export class UserDataService {
       );
     }
 
+    //gets an employee based on the id of the user it has
+    public getEmployeeByUserId(employeeUserId: any): Observable<Employee> {
+      let url = environment.employees + "/user/" + employeeUserId;
+      return this.httpClient.get<Employee>(url, {
+        headers: this.corsHeaders
+      })
+      .pipe(
+        map(response => {return response}),
+        catchError(this.handleError)
+      );
+    }
+
     //get all the teachers for parent to choose from
     public getAllTeachers(): Observable<Employee[]> {
       let url = environment.teachers;
       return this.httpClient.get<Employee[]>(url, {
+        headers: this.corsHeaders
+      })
+      .pipe(
+        map(response => {return response}),
+        catchError(this.handleError)
+      );
+    }
+
+    getExposuresForStudents(studentIds: number[]): Observable<ExposureIncident[]> {
+      let url = environment.employees + "/exposures/students"
+      return this.httpClient.post<ExposureIncident[]>(url, studentIds, {
         headers: this.corsHeaders
       })
       .pipe(

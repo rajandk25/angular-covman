@@ -4,12 +4,12 @@ import { Employee } from 'src/app/common/models/employee.model';
 import { SymptomAnswers } from './symptomAnswers.model';
 import { Modification } from './modification.model';
 
-export class Incident{
+export class ExposureIncident{
     id: number;
     student: Student;
     employee: Employee;
     symptomAnswers: SymptomAnswers;
-    incidentState: string;
+    exposureState: string;
     comments: string;
     modification: Modification;
 }

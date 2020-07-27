@@ -10,7 +10,8 @@ export const environment = {
   users: 'http://localhost:8090/covman/users',
   teachers: 'http://localhost:8090/covman/employees/teachers',
   questions: 'http://localhost:8090/covman/symptoms/questions',
-  checkIn: 'http://localhost:8090/covman/symptoms/checkIn',
+  checkIn: 'http://localhost:8090/covman/symptoms/checkIn/',
+  employees: 'http://localhost:8090/covman/employees',
 };
 
 /*
