@@ -9,6 +9,7 @@ import { Employee } from 'src/app/common/models/employee.model';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SymptomAnswers } from './../../common/models/symptomAnswers.model';
+import { SymptomService } from './../../common/services/symptom-data.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -50,7 +51,7 @@ export class DashboardComponent implements OnInit {
   ];
 
   constructor(private loggedUserService: LoggedUserService, private userDataService: UserDataService,
-    private fb: FormBuilder, private toastService: ToastService) {
+    private fb: FormBuilder, private toastService: ToastService, private symptomService: SymptomService) {
   }
 
   ngOnInit() {
@@ -84,11 +85,9 @@ export class DashboardComponent implements OnInit {
       //if parent exists, then get their students
         if(this.user.students) {
           for(let student of this.user.students) {
-            this.students.push(student);
+            this.getDailyCheckInForStudent(student);
           }
         }
-        console.log("Parent students: " + this.students);
-        this.updateStudentEligibility();
 
         //get all teachers to show in the dropdown to select
         if(this.teachers.length == 0){
@@ -105,6 +104,18 @@ export class DashboardComponent implements OnInit {
             }
           });
         }
+  }
+
+  getDailyCheckInForStudent(student: any) {
+    //call symtpom service to get today's symptoms
+    this.symptomService.getCheckInForToday(student.id).subscribe(checkIn => {
+      if(checkIn) {
+        student.symptomAnswers = checkIn;
+      }
+
+      this.students.push(student);
+      this.updateStudentEligibility();
+    });
   }
 
   //shows the add student form
@@ -169,14 +180,19 @@ export class DashboardComponent implements OnInit {
   updateCheckIn() {
     if(this.user.students) {
         for(let student of this.user.students) {
+
           if(student.id == this.studentToCheckIn.id) {
-            this.studentToCheckIn.symptomAnswers = student.symptomAnswers;
-            this.isCheckingIn = false;
+            this.symptomService.getCheckInForToday(student.id).subscribe(checkIn => {
+              if(checkIn) {
+                this.studentToCheckIn.symptomAnswers = checkIn;
+                student.symptomAnswers = checkIn;
+                this.updateStudentEligibility();
+              }
+              this.isCheckingIn = false;
+            });
           }
         }
     }
-
-    this.updateStudentEligibility();
   }
 
   //handles if student is allowed to come and if there at least one student with positive symptoms

@@ -54,25 +54,27 @@ export class CheckInComponent implements OnInit {
     let checkIn: SymptomAnswers = new SymptomAnswers();
     checkIn.checker = this.checker;
     checkIn.symptomAnswer = [];
-    this.student.symptomAnswers = checkIn;
+    checkIn.student = this.student;
 
     Object.keys(this.studentCheckInForm.controls).forEach(key => {
       let inputValue: any = this.studentCheckInForm.controls[key].value;
+      let ans: SymptomAnswer = new SymptomAnswer();
 
       if(key == 'temperature') {
-          let ans: SymptomAnswer = new SymptomAnswer();
           ans.yesOrNo = true;
           ans.comments = inputValue;
-          this.student.symptomAnswers.symptomAnswer.push(ans);
       } else if(inputValue.length > 0) {
           let ans: SymptomAnswer = inputValue[0];
           ans.yesOrNo = true;
-          this.student.symptomAnswers.symptomAnswer.push(ans);
+      }
+
+      if(ans.yesOrNo) {
+        checkIn.symptomAnswer.push(ans);
       }
     });
 
-    if(this.student.symptomAnswers) {
-      this.symptomService.doDailyCheckIn(this.student).subscribe(symptomAnswers => {
+    if(checkIn.symptomAnswer.length > 0) {
+      this.symptomService.doDailyCheckIn(checkIn).subscribe(symptomAnswers => {
         if(symptomAnswers) {
           this.student.symptomAnswers =  symptomAnswers;
           this.checkInResult.emit(true);
