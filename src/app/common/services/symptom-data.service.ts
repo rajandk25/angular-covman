@@ -25,8 +25,8 @@ export class SymptomService {
      * Add a new parent user from UI
      * @param parent 
      */
-    public doDailyCheckIn(student: Student) : Observable<SymptomAnswers> {
-      return this.httpClient.post<SymptomAnswers>(environment.checkIn, student, {
+    public doDailyCheckIn(checkIn: SymptomAnswers) : Observable<SymptomAnswers> {
+      return this.httpClient.post<SymptomAnswers>(environment.checkIn, checkIn, {
         headers: this.corsHeaders
       })
         .pipe(
@@ -49,7 +49,7 @@ export class SymptomService {
 
     //get today's checkIn for this student
     public getCheckInForToday(studentId: number): Observable<SymptomAnswers> {
-      let url = environment.checkIn + "/" + studentId;
+      let url = environment.checkIn + studentId;
       return this.httpClient.get<SymptomAnswers>(url, {
         headers: this.corsHeaders
       })

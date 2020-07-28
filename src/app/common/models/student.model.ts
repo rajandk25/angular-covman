@@ -14,7 +14,8 @@ export class Student {
     age: number;
     parent: Parent;
     employee: Employee[];
-    symptomAnswers: SymptomAnswers;
+    //this is for front end mappeing only
+    symptomAnswers: SymptomAnswers =  null;;
     school: School;
     modification: Modification;
     isAdmittable = true;

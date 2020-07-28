@@ -7,7 +7,7 @@ export class SymptomAnswers {
 
      id: number;
      symptomAnswer: SymptomAnswer [];
-     student: Student[];
+     student: Student;
      checker: string ;
      modification: Modification;
 
