@@ -8,6 +8,7 @@ import { ToastService } from 'src/app/common/services/toast.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ExposureIncident } from './../../common/models/incident.model';
 import { SelectItem } from 'primeng/api';
+import { Parent } from 'src/app/common/models/parent.model';
 
 @Component({
   selector: 'app-incidents',
@@ -22,6 +23,7 @@ export class IncidentsComponent implements OnInit {
   studentIds: number[] = [];
 
   employee: Employee;
+  parent: Parent;
 
   exposureStatesValues: any = ["OPEN", "POSITIVE", "NEGATIVE", "RECOVERED"];
 
@@ -61,12 +63,17 @@ export class IncidentsComponent implements OnInit {
 
   //get all exposures for all the students for this employee
   populateExposures() {
-    if(this.employee.user.role == 'TEACHER') {
+    if(this.loggedInUser.role == 'TEACHER') {
       this.userDataService.getExposuresForStudents(this.studentIds).subscribe(data => this.exposures = data);
     } // for nurse, admin , they have to search for a particular student
+    else if(this.loggedInUser.role == 'PARENT') {
+      this.userDataService.getExposuresForStudents(this.studentIds).subscribe(data => this.exposures = data);
+    }
+
   }
 
   setStudentsAndExposures() {
+    if(this.loggedInUser.role == 'TEACHER')
     this.userDataService.getEmployeeByUserId(this.loggedInUser.id).subscribe(employee => {
       if(employee) {
         this.employee = employee;
@@ -81,9 +88,21 @@ export class IncidentsComponent implements OnInit {
 
         this.populateExposures();
       }
-    })
+      
+    });
+    else if(this.loggedInUser.role == 'PARENT')
+    this.userDataService.getParentByUserId(this.loggedInUser.id).subscribe(parent =>{
+      if(parent) {
+        this.parent = parent;
+        for(let student of parent.students) {
+          this.studentIds.push(student.id);
+        }
+        this.populateExposures();
+      }
+    });
     
   }
+  
 
   addIncident() {
     this.isAdding =  true;
@@ -116,6 +135,7 @@ export class IncidentsComponent implements OnInit {
   }
 
   updateExposure(event: any, exposure: ExposureIncident) {
+
 
   }
 

@@ -90,8 +90,15 @@
 
     <div class="p-col-12">
     <p-panel *ngIf="(students && students.length > 0) && !isAdding">
-      <p-header><h3>Student Check-in Details</h3></p-header>
-      <p-table [value]="students" [paginator]="false">
+      <p-header><h3>Student Check-in Details</h3>
+      </p-header>
+      <p-table #dt [value]="students" [paginator]="false" [globalFilterFields]="['lastName', 'firstName', 'teacher', 'symptomToDisplay', 'age', 'grade']">
+        <ng-template pTemplate="caption">
+          <div style="text-align: right">        
+              <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+              <input type="text" pInputText size="50" placeholder="Search for any word" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+          </div>
+      </ng-template>
           <ng-template pTemplate="header">
               <tr>
                   <th *ngFor="let col of columns">
@@ -122,7 +129,7 @@
   </div> <!-- table div-->
 
   <div *ngIf="isCheckingIn">
-  <app-check-in [student]="studentToCheckIn" [checker]="this.user.role" (checkInResult)="handleCheckInResult($event)"></app-check-in>
+  <app-check-in [student]="studentToCheckIn" [checker]="this.user.user.role" (checkInResult)="handleCheckInResult($event)"></app-check-in>
   </div>
 
   </div> <!--main grid-->

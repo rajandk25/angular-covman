@@ -30,6 +30,11 @@ export class TeachersComponent implements OnInit {
       //if teacher exists, then get their students
       if(teacher) {
         this.teacher = teacher;
+        if(teacher.students) {
+          for(let student of teacher.students) {
+            student.teacher = teacher.user.firstName + " " + teacher.user.lastName;
+          }
+        }
       } else {
         let employee : Employee = new Employee();
         employee.user = loggedInUser;

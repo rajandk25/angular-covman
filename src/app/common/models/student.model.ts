@@ -19,4 +19,6 @@ export class Student {
     school: School;
     modification: Modification;
     isAdmittable = true;
+    teacher: string = "";
+    symptomToDisplay: string = "";
 }

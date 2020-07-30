@@ -1,20 +1,21 @@
 <div class="login-panel">
-  <div class="p-grid p-nogutter p-justify-center p-align-center" style="height:100%">
+  <div class="p-grid p-nogutter p-justify-center p-align-center" style="height:100%" >
+    
     <div class="p-col-5">
-      <p-panel header="Login">
+      
+      <p-panel header="Login" >
         <br/>
         <br/>
 
         <div class="p-grid p-justify-center p-align-center">
 
+          <div class="p-col-8">
+            <img src="Card" src="assets/images/c1.PNG" class="login-logo">
+          </div>
+
           <div class="p-col-8" *ngIf="isError">
           <p-message severity="error" text="Error logging in. Please retry."></p-message>
         </div>
-
-        <br/>
-        <br/>
-        <br/>
-        <br/>
 
           <div class="p-col-8 p-justify-center p-align-center">
             <div class="ui-inputgroup">

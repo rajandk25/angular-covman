@@ -2,11 +2,11 @@
 
 <div class="ui-g dashboard-card" *ngIf="students">
 
-    <div class="ui-g-6 ui-md-12">
+    <div class="ui-g-6 ui-md-12" >
   
-    <p-panel>
+    <p-panel *ngIf = "loggedInUser.role !=='PARENT'">
       <p-header>
-          <div class="ui-helper-clearfix">
+          <div class="ui-helper-clearfix"  >
            <h1>Incident Management</h1>
           </div>
       </p-header>
@@ -48,7 +48,7 @@
               <br/>
               <br/>
               <br/>
-              <div class="p-col-3">
+              <div class="p-col-3" >
                 <button pButton type="submit" label="Add" class="ui-button-raised" icon="pi pi-check" iconPos="right"></button>
               </div>
               <div class="p-col-3">
@@ -98,7 +98,9 @@
                                 <div class="p-col-12">Comments: <b>{{exposure.comments}}</b></div>
                             </div>
                         </div>
+                    <div *ngIf = "loggedInUser.role !=='PARENT'">
                         <button pButton type="button" icon="pi pi-user-edit" (click)="updateExposure($event, exposure)"></button>
+                    </div>
                     </div>
                 </div>
             </ng-template>
