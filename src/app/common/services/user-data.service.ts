@@ -19,7 +19,8 @@ export class UserDataService {
     readonly corsHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
     });
 
     /**
@@ -112,6 +113,27 @@ export class UserDataService {
 
     public addStudent(student: Student) : Observable<Student> {
       return this.httpClient.post<Student>(environment.students, student, {
+        headers: this.corsHeaders
+      })
+        .pipe(
+          map(response => {return response}),
+          catchError(this.handleError)
+        );
+    }
+
+    updateStudent(student: Student) {
+      return this.httpClient.put<Student>(environment.students, student, {
+        headers: this.corsHeaders
+      })
+        .pipe(
+          map(response => {return response}),
+          catchError(this.handleError)
+        );
+    }
+
+    //delete takes Id and can't pass request body
+    deleteStudent(student: Student) {
+      return this.httpClient.delete<Student>(environment.students + "/" + student.id, {
         headers: this.corsHeaders
       })
         .pipe(

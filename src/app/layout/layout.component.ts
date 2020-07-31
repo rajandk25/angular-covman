@@ -51,6 +51,9 @@ export class LayoutComponent implements OnInit {
                 },
                 {
                     label: 'Incidents',  routerLink: '/parent/incidents'
+                },
+                {
+                    label: 'Profile',  routerLink: '/parent/profile'
                 }
             ]
         } else if(role=='TEACHER') {

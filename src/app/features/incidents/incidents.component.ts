@@ -18,6 +18,7 @@ import { Parent } from 'src/app/common/models/parent.model';
 export class IncidentsComponent implements OnInit {
 
   incidentAddForm: FormGroup;
+  incidentEditForm: FormGroup;
 
   students: Student[] = [];
   studentIds: number[] = [];
@@ -32,6 +33,7 @@ export class IncidentsComponent implements OnInit {
 
   loggedInUser: any;
   isAdding: boolean = false;
+  isEditing: boolean = false;
 
   exposures: ExposureIncident[];
 

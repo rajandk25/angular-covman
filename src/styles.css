@@ -373,6 +373,18 @@ a {
     color: var(--header-footer-bg-color2)
 }
 
+.td-center {
+    text-align: center;
+    }
+    
+    .img-height {
+        height: 50px;
+    }
+    
+    .img-icon {
+        height: 25px;
+    }
+
 /* Small devices (portrait tablets and large phones, 768px or less) */
 
 @media only screen and (max-width: 768px) {}

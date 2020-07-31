@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
   students: any[] = [];
   isAdding: boolean = false;
   isCheckingIn: boolean = false;
+  
 
   studentAddForm: FormGroup;
   teachers: Array<any> = [];
@@ -170,7 +171,6 @@ export class DashboardComponent implements OnInit {
     this.studentToCheckIn = student;
     this.isCheckingIn = true;
   }
-
 
   //Hierarchy of components ==> 
   // Parent Component 
