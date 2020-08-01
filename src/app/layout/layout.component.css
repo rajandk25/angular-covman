@@ -1,0 +1,10 @@
+.image-logo {
+    background-image:url('/assets/images/c1.PNG');
+    background-repeat: repeat;
+    background-position: center;
+    width: 90%;
+    height: 100%;
+    opacity: 85%;
+    line-height: 170px;
+    margin-bottom: 50px;
+  }

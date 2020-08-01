@@ -19,7 +19,6 @@ export class ParentsComponent implements OnInit {
     let loggedInUser = this.loggedUserService.loggedInUser();
 
     this.userDataService.getParentByUserId(loggedInUser.id).subscribe((parent: Parent) => {
-      console.log(parent);
 
       //if parent exists, then get their students
       if(parent) {
@@ -37,7 +36,6 @@ export class ParentsComponent implements OnInit {
   //handles refresh  for parent, this is called when event thrown by check-in comes here thru dashboard
   handleCheckInResultForParent() {
     this.userDataService.getParentByUserId(this.parent.user.id).subscribe((parent: Parent) => {
-      console.log("Updated Parent " + parent);
       this.parent = parent;
     });
   }

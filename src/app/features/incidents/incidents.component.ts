@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Student } from './../../common/models/student.model';
 import { LoggedUserService } from 'src/app/common/services/logged-user.service';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -10,15 +10,17 @@ import { ExposureIncident } from './../../common/models/incident.model';
 import { SelectItem } from 'primeng/api';
 import { Parent } from 'src/app/common/models/parent.model';
 
+
 @Component({
   selector: 'app-incidents',
   templateUrl: './incidents.component.html',
-  styleUrls: ['./incidents.component.css']
+  styleUrls: ['./incidents.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class IncidentsComponent implements OnInit {
 
   incidentAddForm: FormGroup;
-  incidentEditForm: FormGroup;
+  incidentUpdateForm: FormGroup;
 
   students: Student[] = [];
   studentIds: number[] = [];
@@ -33,9 +35,10 @@ export class IncidentsComponent implements OnInit {
 
   loggedInUser: any;
   isAdding: boolean = false;
-  isEditing: boolean = false;
+  isUpdating: boolean = false;
+  exposureToUpdate: ExposureIncident;
 
-  exposures: ExposureIncident[];
+  exposures: ExposureIncident[] = [];
 
   sortOptions: SelectItem[];
 
@@ -45,15 +48,15 @@ export class IncidentsComponent implements OnInit {
 
   sortOrder: number;
 
-  constructor(private loggedUserService: LoggedUserService, private fb: FormBuilder, 
-    private userDataService: UserDataService, private toastService: ToastService) { 
-      this.sortOptions = [
-        {label: 'First Name', value: 'student.firstName'},
-        {label: 'Last Name', value: 'student.lastName'},
-        {label: 'State', value: 'exposureState'},
-        {label: 'Recently Updated', value: '!modification.modifiedAt'}
+  constructor(private loggedUserService: LoggedUserService, private fb: FormBuilder,
+    private userDataService: UserDataService, private toastService: ToastService) {
+    this.sortOptions = [
+      { label: 'First Name', value: 'student.firstName' },
+      { label: 'Last Name', value: 'student.lastName' },
+      { label: 'State', value: 'exposureState' },
+      { label: 'Recently Updated', value: '!modification.modifiedAt' }
     ];
-     }
+  }
 
   ngOnInit(): void {
     this.loggedInUser = this.loggedUserService.loggedInUser();
@@ -65,49 +68,49 @@ export class IncidentsComponent implements OnInit {
 
   //get all exposures for all the students for this employee
   populateExposures() {
-    if(this.loggedInUser.role == 'TEACHER') {
+    if (this.loggedInUser.role == 'TEACHER') {
       this.userDataService.getExposuresForStudents(this.studentIds).subscribe(data => this.exposures = data);
     } // for nurse, admin , they have to search for a particular student
-    else if(this.loggedInUser.role == 'PARENT') {
+    else if (this.loggedInUser.role == 'PARENT') {
       this.userDataService.getExposuresForStudents(this.studentIds).subscribe(data => this.exposures = data);
     }
 
   }
 
   setStudentsAndExposures() {
-    if(this.loggedInUser.role == 'TEACHER')
-    this.userDataService.getEmployeeByUserId(this.loggedInUser.id).subscribe(employee => {
-      if(employee) {
-        this.employee = employee;
-        for(let student of  employee.students) {
-          this.studentIds.push(student.id);
+    if (this.loggedInUser.role == 'TEACHER')
+      this.userDataService.getEmployeeByUserId(this.loggedInUser.id).subscribe(employee => {
+        if (employee) {
+          this.employee = employee;
+          for (let student of employee.students) {
+            this.studentIds.push(student.id);
 
-          this.dropDownStudents.push({
-            label: student.firstName + " " + student.lastName,
-            value: student
-          });
+            this.dropDownStudents.push({
+              label: student.firstName + " " + student.lastName,
+              value: student
+            });
+          }
+
+          this.populateExposures();
         }
 
-        this.populateExposures();
-      }
-      
-    });
-    else if(this.loggedInUser.role == 'PARENT')
-    this.userDataService.getParentByUserId(this.loggedInUser.id).subscribe(parent =>{
-      if(parent) {
-        this.parent = parent;
-        for(let student of parent.students) {
-          this.studentIds.push(student.id);
+      });
+    else if (this.loggedInUser.role == 'PARENT')
+      this.userDataService.getParentByUserId(this.loggedInUser.id).subscribe(parent => {
+        if (parent) {
+          this.parent = parent;
+          for (let student of parent.students) {
+            this.studentIds.push(student.id);
+          }
+          this.populateExposures();
         }
-        this.populateExposures();
-      }
-    });
-    
+      });
+
   }
-  
+
 
   addIncident() {
-    this.isAdding =  true;
+    this.isAdding = true;
   }
 
   //create an incident object and pass to the service and handle response
@@ -115,8 +118,8 @@ export class IncidentsComponent implements OnInit {
     let selectedStudent: Student = this.incidentAddForm.controls["student"].value;
     let exposureState: string = this.incidentAddForm.controls["exposureState"].value;
     let comments: string = this.incidentAddForm.controls["comments"].value;
-    
-    if(selectedStudent && exposureState && selectedStudent && this.employee) {
+
+    if (selectedStudent && exposureState && selectedStudent && this.employee) {
       let incident: ExposureIncident = new ExposureIncident();
       incident.employee = this.employee;
       incident.student = selectedStudent;
@@ -124,29 +127,55 @@ export class IncidentsComponent implements OnInit {
       incident.exposureState = exposureState;
 
       this.userDataService.addIncident(incident).subscribe(data => {
-        if(data) {
-          this.toastService.addSingle("success", "", "Student added incident.");
+        if (data) {
+          this.toastService.addSingle("success", "", "Exposure incident added.");
           this.isAdding = false;
           this.populateExposures();
         }
       },
-      (error: HttpErrorResponse) => {
-        this.toastService.addSingle("error", "", "Unable to add incident. Please try again. "  +error.message);
-      });
+        (error: HttpErrorResponse) => {
+          this.toastService.addSingle("error", "", "Unable to add incident. Please try again. " + error.message);
+        });
     }
   }
 
-  updateExposure(event: any, exposure: ExposureIncident) {
+  startUpdateExposure(event: any, exposure: ExposureIncident) {
+    this.isUpdating = true;
+    this.exposureToUpdate = exposure;
+    this.incidentUpdateForm = this.fb.group({
+      comments: new FormControl(exposure.comments, Validators.required),
+      exposureState: new FormControl(exposure.exposureState, Validators.required)
+    });
 
+  }
 
+  handleUpdateExposure() {
+    let exposureState: string = this.incidentUpdateForm.controls["exposureState"].value;
+    let comments: string = this.incidentUpdateForm.controls["comments"].value;
+    this.exposureToUpdate.exposureState = exposureState;
+    this.exposureToUpdate.comments = comments;
+
+    this.userDataService.updateExposure(this.exposureToUpdate).subscribe(updatedExposure => {
+      if (updatedExposure) {
+        this.isUpdating = false;
+        this.exposureToUpdate = null;
+        this.toastService.addSingle("success", "", "Exposure updated successfully");
+
+      }
+    },
+      (error: HttpErrorResponse) => this.toastService.addSingle("error", "", "Problem updating exposure incident: " + error.message));
   }
 
   cancelAddIncident() {
-    this.isAdding =  false;
+    this.isAdding = false;
+  }
+
+  cancelUpdateIncident() {
+    this.isUpdating = false;
   }
 
   createExposureDropdown() {
-    for(let state of this.exposureStatesValues) {
+    for (let state of this.exposureStatesValues) {
       this.exposureStates.push({
         label: state,
         value: state
@@ -166,13 +195,13 @@ export class IncidentsComponent implements OnInit {
     let value = event.value;
 
     if (value.indexOf('!') === 0) {
-        this.sortOrder = -1;
-        this.sortField = value.substring(1, value.length);
+      this.sortOrder = -1;
+      this.sortField = value.substring(1, value.length);
     }
     else {
-        this.sortOrder = 1;
-        this.sortField = value;
+      this.sortOrder = 1;
+      this.sortField = value;
     }
-}
+  }
 
 }

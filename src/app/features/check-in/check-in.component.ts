@@ -72,7 +72,6 @@ export class CheckInComponent implements OnInit {
       }
     });
 
-    console.log("Number of symptoms: " + checkIn.symptomAnswer.length);
     if(checkIn.symptomAnswer.length > 0) {
       this.symptomService.doDailyCheckIn(checkIn).subscribe(symptomAnswers => {
         if(symptomAnswers) {

@@ -1,71 +1,12 @@
-.theme-light {
-    --main-background: #ffffff;
-    --header-footer-color: #000000;
-    --header-footer-bg-color: #d9d9d9;
-    --header-footer-bg-color2: #a6a6a6;
-    --menubar-background: #878787;
-    --menubar-color: #000000;
-    --active-menu-item-color: #cccccc;
-}
-
-.theme-dark {
-    --main-background: #f5f5f5;
-    --header-footer-color: #ffffff;
-    --header-footer-bg-color: #6f6f88;
-    --header-footer-bg-color2: #3b3b48;
-    --menubar-background: #525262;
-    --menubar-color: #f5f5f5;
-    --active-menu-item-color: #919191;
-}
-
-.theme-Turquoise {
-    --main-background: #f5f5f5;
-    --header-footer-color: #ffffff;
-    --header-footer-bg-color: #6cc7cf;
-    --header-footer-bg-color2: #03767e;
-    --menubar-background: #2ab1be;
-    --menubar-color: #f5f5f5;
-    --active-menu-item-color: #ffffff;
-}
-
-.theme-green {
-    --main-background: #f5f5f5;
-    --header-footer-color: #ffffff;
-    --header-footer-bg-color: #73dfae;
-    --header-footer-bg-color2: #1e8455;
-    --menubar-background: #32b67a;
-    --menubar-color: #135436;
-    --active-menu-item-color: #b3eed3;
-}
-
-.theme-blue {
-    --main-background: #f5f5f5;
-    --header-footer-color: #ffffff;
-    --header-footer-bg-color: #2d5394;
-    --header-footer-bg-color2: #2d5394;
-    --menubar-background: #839de2;
-    --menubar-color: #f5f5f5;
-    --active-menu-item-color: #ffffff;
-}
-
-.theme-rose {
-    --main-background: #f5f5f5;
-    --header-footer-color: #ffffff;
-    --header-footer-bg-color: #79425a;
-    --header-footer-bg-color2: #79425a;
-    --menubar-background: #935b74;
-    --menubar-color: #f5f5f5;
-    --active-menu-item-color: #ffffff;
-}
 
 .theme-teal {
-    --main-background: #f5f5f5;
-    --header-footer-color: #ffffff;
-    --header-footer-bg-color: #427976;
-    --header-footer-bg-color2: #427976;
-    --menubar-background: #599592;
-    --menubar-color: #f5f5f5;
-    --active-menu-item-color: #003331;
+    --main-background: #ebebeb;
+    --header-footer-color: #fff;
+    --header-footer-bg-color:#293333;
+    --header-footer-bg-color2:  #293333;
+    --menubar-background: #eee;
+    --menubar-color: rgb(19, 19, 22);
+    --active-menu-item-color: rgb(184, 103, 103);
 }
 
 html, body {
@@ -74,7 +15,7 @@ html, body {
 }
 
 .ng-main {
-    background-color: var(--main-background);
+    background-color:#ebebeb;
     height: 100%;
 }
 
@@ -123,7 +64,7 @@ html, body {
 
 .icon {
     line-height: 50px;
-    font-size: 20px;
+    font-size: 30px;
     cursor: pointer;
     padding: 10px;
 }
@@ -158,7 +99,7 @@ html, body {
 
 .login-panel, .user-regisration {
     height: 100%;
-    background-image: radial-gradient(var(--header-footer-bg-color) 40%, var(--header-footer-bg-color2));
+    background-image: #ebebeb;
 }
 
 .badge {
@@ -179,6 +120,8 @@ html, body {
 .login-logo {
     height: 100%;
     width: 100%;
+    
+    
 }
 
 .toggle-menu-button {
@@ -260,7 +203,6 @@ html, body {
 
 .np-menubar {
     background-color: var(--menubar-background) !important;
-    height: calc(100% - 100px);
     overflow: auto;
     border: none !important;
     padding: 0px !important;
@@ -276,21 +218,38 @@ html, body {
 }
 
 .np-menu {
-    padding: 5px;
+    padding: 10px;
     margin: 0px;
 }
 
 .np-menu li a {
-    padding: 7px;
+    padding: 10px;
     color: var(--menubar-color);
     display: block;
     text-decoration: none !important;
     position: relative;
+    margin: 10px 10px 0;
+    border-radius: 3px;
 }
 
-.np-menu li a:hover, .np-menu .active {
+.np-menu li a i {
+    float: left;
+    margin-right: 15px;
+    vertical-align: center;
+}
+
+.np-menu li a:hover, .np-menu {
     color: var(--active-menu-item-color);
     cursor: pointer;
+    background-color: transparent;
+    outline: 0;
+}
+
+.np-menu .active {
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(244,67,54,.4);
+    background-color: #ce483e;
 }
 
 .np-menu .fa {
@@ -314,8 +273,9 @@ html, body {
 }
 
 .np-menubar {
-    box-shadow: none !important;
+    box-shadow: grey ;
 }
+
 
 a {
     cursor: pointer;
@@ -374,16 +334,21 @@ a {
 }
 
 .td-center {
-    text-align: center;
-    }
-    
-    .img-height {
-        height: 50px;
-    }
-    
-    .img-icon {
-        height: 25px;
-    }
+text-align: center;
+}
+
+.img-height {
+    height: 50px;
+}
+
+.img-icon {
+    height: 25px;
+}
+body .ui-sidebar {
+    font-size: 20px;
+ }
+
+
 
 /* Small devices (portrait tablets and large phones, 768px or less) */
 

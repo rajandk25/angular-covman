@@ -1,113 +1,176 @@
-
-
 <div class="ui-g dashboard-card" *ngIf="students">
 
-    <div class="ui-g-6 ui-md-12" >
-  
-    <p-panel *ngIf = "loggedInUser.role !=='PARENT'">
+  <div class="ui-g-6 ui-md-12">
+
+    <p-panel *ngIf="loggedInUser.role !=='PARENT'">
       <p-header>
-          <div class="ui-helper-clearfix"  >
-           <h1>Incident Management</h1>
-          </div>
+        <div class="ui-helper-clearfix">
+          <h1>Incident Management</h1>
+        </div>
       </p-header>
-      <br/>
+      <br />
       <p-footer>
         <div class="p-col-3" *ngIf="loggedInUser.role !== 'PARENT'">
           <button pButton type="button" label="Add Incident" class="ui-button-raised" (click)="addIncident()"></button>
         </div>
       </p-footer>
     </p-panel>
-  
-        <br>
-        <br>
-        <br>
-  
-      <!--Add Incident form panel-->
-      <div class="p-col-12" *ngIf="isAdding">
-        <form [formGroup]="incidentAddForm" (ngSubmit)="handleAddIncident()">
-          <p-panel header="Add Incident">
-            <h3>Please complete all the fields below:</h3>
-            <div class="ui-fluid p-formgrid p-grid">
-                <div class="p-field p-col-12 p-md-8">
-                    <label for="student">Student</label>
-                    <p-dropdown [options]="dropDownStudents" formControlName="student" placeholder="Select Student"></p-dropdown>
-                </div>
 
-                <div class="p-field p-col-12 p-md-8">
-                    <label for="student">Exposure State</label>
-                    <p-dropdown [options]="exposureStates" formControlName="exposureState" placeholder="Select Exposure State"></p-dropdown>
-                </div>
+    <p-panel *ngIf="loggedInUser.role =='PARENT' && exposures.length == 0">
+      <p-header>
+        <div class="ui-helper-clearfix">
+          <h1>Incident Management</h1>
+        </div>
+      </p-header>
+      <br />
+      <h3>No Exposure incidents exist for your children yet.</h3>
+    </p-panel>
 
-                <div class="p-field p-col-12 col-md-6">
-                    <label for="comments">Comments</label>
-                    <textarea id="comments" type="text" rows="6" formControlName="comments" pInputTextarea></textarea>
-                </div>
+    <br>
+    <br>
+    <br>
+
+    <!--Add Incident form panel-->
+    <div class="p-col-12" *ngIf="isAdding">
+      <form [formGroup]="incidentAddForm" (ngSubmit)="handleAddIncident()">
+        <p-panel header="Add Incident">
+          <h3>Please complete all the fields below:</h3>
+          <div class="ui-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-8">
+              <label for="student">Student</label>
+              <p-dropdown [options]="dropDownStudents" formControlName="student" placeholder="Select Student">
+              </p-dropdown>
             </div>
-            
+
+            <div class="p-field p-col-12 p-md-8">
+              <label for="student">Exposure State</label>
+              <p-dropdown [options]="exposureStates" formControlName="exposureState"
+                placeholder="Select Exposure State"></p-dropdown>
+            </div>
+
+            <div class="p-field p-col-12 col-md-6">
+              <label for="comments">Comments</label>
+              <textarea id="comments" type="text" rows="6" formControlName="comments" pInputTextarea></textarea>
+            </div>
+          </div>
+
+          <div class="p-grid p-justify-right p-align-right">
+            <br />
+            <br />
+            <br />
+            <div class="p-col-3">
+              <button pButton type="submit" label="Add" class="ui-button-raised" icon="pi pi-check"
+                iconPos="right"></button>
+            </div>
+            <div class="p-col-3">
+              <button pButton type="button" label="Cancel" class="ui-button-raised"
+                (click)="cancelAddIncident()"></button>
+            </div>
+          </div>
+        </p-panel>
+      </form>
+    </div>
+
+    <div class="p-col-12">
+      <p-panel *ngIf="(exposures && exposures.length > 0) && !isAdding">
+        <p-header>
+          <h3>Exposure Details</h3>
+        </p-header>
+
+
+        <p-dataView #dv [value]="exposures" [paginator]="true" [rows]="5" filterBy="exposureState"
+          [sortField]="sortField" [sortOrder]="sortOrder">
+          <p-header>
+            <div class="ui-helper-clearfix">
+              <div class="p-grid">
+                <div class="p-col-12 p-md-4">
+                  <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By"
+                    (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
+                </div>
+                <div class="p-col-6 p-md-4 filter-container">
+                  <div style="position:relative">
+                    <input type="search" pInputText placeholder="Search by State"
+                      (input)="dv.filter($event.target.value)">
+                  </div>
+                </div>
+                <div class="p-col-6 p-md-4" style="text-align:right">
+                  <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                </div>
+              </div>
+            </div>
+          </p-header>
+          <ng-template let-exposure pTemplate="listItem">
+            <div class="p-col-12">
+              <div class="incident-details">
+                <div>
+                  <div class="p-grid">
+                    <div class="p-col-12">Incident Id: <b>{{exposure.id}}</b></div>
+                    <div class="p-col-12">Student Name: <b>{{exposure.student.firstName}}</b>
+                      &nbsp;<b>{{exposure.student.lastName}}</b></div>
+                    <div class="p-col-12">Grade: <b>{{exposure.student.grade}}</b></div>
+                    <div class="p-col-12">State: <b>{{exposure.exposureState}}</b></div>
+                    <div class="p-col-12">Created By:
+                      <b>{{exposure.employee.user.firstName}}</b>&nbsp;<b>{{exposure.employee.user.lastName}}</b></div>
+                    <div class="p-col-12">Updated: <b>{{exposure.modification.modifiedAt}}</b></div>
+                    <div class="p-col-12">Updated By: <b>{{exposure.modification.modifiedBy}}</b></div>
+                    <div class="p-col-12">Comments: <b>{{exposure.comments}}</b></div>
+                  </div>
+                </div>
+
+
+
+                <div *ngIf="loggedInUser.role !=='PARENT'">
+                  <button pButton type="button" icon="pi pi-user-edit"
+                    (click)="startUpdateExposure($event, exposure)"></button>
+                </div>
+
+
+              </div>
+            </div>
+          </ng-template>
+        </p-dataView>
+      </p-panel>
+
+    </div>
+
+    <!--dialog-->
+    <p-dialog header="Update Exposure" [(visible)]="isUpdating">
+
+      <!--Update Incident Form Panel-->
+      <div class="p-col-12" *ngIf="isUpdating">
+        <form [formGroup]="incidentUpdateForm" (ngSubmit)="handleUpdateExposure()">
+          <div class="ui-fluid p-formgrid p-grid">
+            <div class="p-field p-col-12 p-md-8">
+              <label for="student">Exposure State</label>
+              <p-dropdown [options]="exposureStates" formControlName="exposureState"
+                placeholder="Select Exposure State"></p-dropdown>
+            </div>
+
+            <div class="p-field p-col-12 col-md-6">
+              <label for="comments">Comments</label>
+              <textarea type="text" rows="6" formControlName="comments" pInputTextarea></textarea>
+            </div>
+          </div>
+
+          <p-footer>
             <div class="p-grid p-justify-right p-align-right">
-              <br/>
-              <br/>
-              <br/>
-              <div class="p-col-3" >
-                <button pButton type="submit" label="Add" class="ui-button-raised" icon="pi pi-check" iconPos="right"></button>
+              <br />
+              <br />
+              <br />
+              <div class="p-col-3">
+                <button pButton type="submit" label="Update" class="ui-button-raised" icon="pi pi-check"
+                  iconPos="right"></button>
               </div>
               <div class="p-col-3">
-                <button pButton type="button" label="Cancel" class="ui-button-raised" (click)="cancelAddIncident()"></button>
+                <button pButton type="button" label="Cancel" class="ui-button-raised"
+                  (click)="cancelUpdateIncident()"></button>
               </div>
             </div>
-          </p-panel>
+          </p-footer>
         </form>
       </div>
-  
-      <div class="p-col-12">
-      <p-panel *ngIf="(exposures && exposures.length > 0) && !isAdding">
-        <p-header><h3>Exposure Details</h3></p-header>
 
+    </p-dialog>
 
-        <p-dataView #dv [value]="exposures" [paginator]="true" [rows]="5"  filterBy="exposureState"
-        [sortField]="sortField" [sortOrder]="sortOrder">
-        <p-header>
-            <div class="ui-helper-clearfix">
-                <div class="p-grid">
-                    <div class="p-col-12 p-md-4">
-                        <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By" (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
-                    </div>
-                    <div class="p-col-6 p-md-4 filter-container">
-                        <div style="position:relative">
-                            <input type="search" pInputText placeholder="Search by State" (input)="dv.filter($event.target.value)">
-                        </div>
-                    </div>
-                    <div class="p-col-6 p-md-4" style="text-align:right">
-                        <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
-                    </div>
-                </div>
-            </div>
-        </p-header>
-            <ng-template let-exposure pTemplate="listItem">
-                <div class="p-col-12">
-                    <div class="incident-details">
-                        <div>
-                            <div class="p-grid">
-                                <div class="p-col-12">Incident Id: <b>{{exposure.id}}</b></div>
-                                <div class="p-col-12">Student Name: <b>{{exposure.student.firstName}}</b> &nbsp;<b>{{exposure.student.lastName}}</b></div>
-                                <div class="p-col-12">Grade: <b>{{exposure.student.grade}}</b></div>
-                                <div class="p-col-12">State: <b>{{exposure.exposureState}}</b></div>
-                                <div class="p-col-12">Created By: <b>{{exposure.employee.user.firstName}}</b>&nbsp;<b>{{exposure.employee.user.lastName}}</b></div>
-                                <div class="p-col-12">Updated: <b>{{exposure.modification.modifiedAt}}</b></div>
-                                <div class="p-col-12">Updated By: <b>{{exposure.modification.modifiedBy}}</b></div>
-                                <div class="p-col-12">Comments: <b>{{exposure.comments}}</b></div>
-                            </div>
-                        </div>
-                    <div *ngIf = "loggedInUser.role !=='PARENT'">
-                        <button pButton type="button" icon="pi pi-user-edit" (click)="updateExposure($event, exposure)"></button>
-                    </div>
-                    </div>
-                </div>
-            </ng-template>
-        </p-dataView>
-    </p-panel>
-    </div> <!-- table div-->
-  
-    </div> <!--main grid-->
-  
   </div>
+</div>

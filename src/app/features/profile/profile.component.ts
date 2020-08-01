@@ -19,7 +19,6 @@ export class ProfileComponent implements OnInit {
   parent: Parent;
   loggedInUser: any;
   isEditing: boolean = false;
-  canEditStuent: boolean =false;
   role: any;
   user: any;
 
@@ -49,7 +48,6 @@ export class ProfileComponent implements OnInit {
   initializeParentAndStudents() {
     let loggedInUser = this.loggedUserService.loggedInUser();
     this.userDataService.getParentByUserId(loggedInUser.id).subscribe((parent: Parent) => {
-      console.log(parent);
 
       if(parent) {
         this.parent = parent;
@@ -112,8 +110,6 @@ export class ProfileComponent implements OnInit {
     this.studentToUpdate.grade = grade;
     this.studentToUpdate.employee = [teacher];
 
-    console.log("updated student: " + this.studentToUpdate);
-
     this.userDataService.updateStudent(this.studentToUpdate).subscribe(updatedStudent => {
       if(updatedStudent) {
         //reset current students for this page and reload them all again to prevent doubling up
@@ -160,8 +156,6 @@ export class ProfileComponent implements OnInit {
     isEditing: true;
   }
 
-  handleEditProfile() {
-
-  }
+ 
 
 }

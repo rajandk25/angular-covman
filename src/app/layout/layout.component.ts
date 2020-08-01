@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SidebarMenuItem } from 'src/app/common/models/sidebar-menu-item.model';
 import { SessionService } from 'src/app/common/services/session.service';
 import { Router } from '@angular/router';
@@ -7,7 +7,8 @@ import { LoggedUserService } from 'src/app/common/services/logged-user.service';
 @Component({
   selector: 'app-layout',
   templateUrl: 'layout.component.html',
-  styleUrls: ['layout.component.css']
+  styleUrls: ['layout.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class LayoutComponent implements OnInit {
 
@@ -47,22 +48,31 @@ export class LayoutComponent implements OnInit {
         if(role=='PARENT') {
             return [
                 {
-                    label: 'Home',  routerLink: '/parent/dashboard'
+                    label: 'Home',  routerLink: '/parent/dashboard', icon: 'pi pi-home'
                 },
                 {
-                    label: 'Incidents',  routerLink: '/parent/incidents'
+                    label: 'Incidents',  routerLink: '/parent/incidents', icon: 'pi pi-bars'
                 },
                 {
-                    label: 'Profile',  routerLink: '/parent/profile'
+                    label: 'Profile',  routerLink: '/parent/profile', icon: 'pi pi-user'
                 }
             ]
         } else if(role=='TEACHER') {
             return [
                 {
-                    label: 'Home',  routerLink: '/teachers/dashboard'
+                    label: 'Home',  routerLink: '/teachers/dashboard', icon: 'pi pi-home'
                 },
                 {
-                    label: 'Incidents',  routerLink: '/teachers/incidents'
+                    label: 'Incidents',  routerLink: '/teachers/incidents', icon: 'pi pi-bars'
+                }
+            ]
+        } else if(role=='ADMIN') {
+            return [
+                {
+                    label: 'Employees',  routerLink: '/admin/dashboard', icon: 'pi pi-home'
+                },
+                {
+                    label: 'Incidents',  routerLink: '/admin/incidents', icon: 'pi pi-bars'
                 }
             ]
         }

@@ -1,0 +1,126 @@
+<div class="ui-g dashboard-card" *ngIf="employees">
+
+    <div class="ui-g-6 ui-md-12">
+
+
+        <p-panel>
+            <p-header>
+                <div class="ui-g">
+                    <div class="ui-g-10 ui-sm-8"><label class="big-bold">Employees</label></div>
+                    <div class="ui-g-2 ui-sm-4"><span>
+                            <button pButton type="submit" label="Add Employee" class="ui-button-raised"
+                                icon="pi pi-check" iconPos="right" (click)="startAdding()"></button>
+                        </span></div>
+                </div>
+            </p-header>
+
+            <p-dataView #dv [value]="employees" [paginator]="true" [rows]="5" filterBy="user.role"
+                [sortField]="sortField" [sortOrder]="sortOrder">
+                <p-header>
+                    <div class="ui-helper-clearfix">
+                        <div class="p-grid">
+                            <div class="p-col-12 p-md-4">
+                                <p-dropdown [options]="sortOptions" [(ngModel)]="sortKey" placeholder="Sort By"
+                                    (onChange)="onSortChange($event)" [style]="{'min-width':'140px'}"></p-dropdown>
+                            </div>
+                            <div class="p-col-6 p-md-4 filter-container">
+                                <div style="position:relative">
+                                    <input type="search" pInputText placeholder="Search by Role"
+                                        (input)="dv.filter($event.target.value)">
+                                </div>
+                            </div>
+                            <div class="p-col-6 p-md-4" style="text-align:right">
+                                <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                            </div>
+                        </div>
+                    </div>
+                </p-header>
+                <ng-template let-employee pTemplate="listItem">
+                    <div class="p-col-12">
+                        <div class="incident-details">
+                            <div>
+                                <div class="p-grid">
+                                    <div class="p-col-12">Employee Id: <b>{{employee.id}}</b></div>
+                                    <div class="p-col-12">Name: <b>{{employee.user.firstName}}</b>
+                                        &nbsp;<b>{{employee.user.lastName}}</b></div>
+                                    <div class="p-col-12">Role: <b>{{employee.user.role}}</b></div>
+                                    <div class="p-col-12">School: <b>{{employee.school.name}}</b></div>
+                                    <div class="p-col-12">District: <b>{{employee.school.district.name}}</b></div>
+                                    <div class="p-col-12">Number of Students: <b>{{employee.students.length}}</b></div>
+                                    <div class="p-col-12">Email: <b>{{employee.user.email}}</b></div>
+                                    <div class="p-col-12">
+                                        <span class="p-col-6">
+                                            <button pButton type="button" icon="pi pi-pencil"
+                                                (click)="startUpdating($event, employee)"></button>
+                                        </span>
+                                        <span class="p-col-6">
+                                            <button pButton type="button" icon="pi pi-times"
+                                                (click)="deleteEmployee($event, employee)"></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr />
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView>
+
+            <!-- Add or update employee-->
+            <p-dialog header="Employee Management" [(visible)]="isAdding || isUpdating" styleClass="mydialog">
+                <div class="p-col-8" *ngIf="isAdding || isUpdating">
+                    <form [formGroup]="employeeForm">
+                            <div class="ui-fluid p-formgrid p-grid">
+                                <div class="p-field p-col-12 p-md-6">
+                                    <label for="firstname">Firstname</label>
+                                    <input id="firstName" type="text" formControlName="firstName" pInputText>
+                                </div>
+                                <div class="p-field p-col-12 p-md-6">
+                                    <label for="lastname">Lastname</label>
+                                    <input id="lastName" formControlName="lastName" type="text" pInputText>
+                                </div>
+                                <div class="p-field p-col-12 p-md-12">
+                                    <label for="email">Email Id</label>
+                                    <input id="email" formControlName="email" type="text" pInputText>
+                                </div>
+                                <div class="p-field p-col-12 p-md-3" *ngIf="isAdding">
+                                    <label for="teacher">School</label>
+                                    <p-dropdown [options]="roles" formControlName="role"
+                                        placeholder="Select Role" appendTo="body"></p-dropdown>
+                                </div>
+                                <div class="p-field p-col-12 p-md-3">
+                                    <label for="teacher">School</label>
+                                    <p-dropdown [options]="schools" formControlName="school"
+                                        placeholder="Select School" appendTo="body"></p-dropdown>
+                                </div>
+                            </div>
+
+                            <p-footer>
+                                <div class="p-grid p-justify-right p-align-right">
+                                    <br />
+                                    <br />
+                                    
+                                    <div class="p-col-3" *ngIf="isAdding">
+                                        <button pButton type="submit" label="Add" class="ui-button-raised"
+                                            icon="pi pi-check" iconPos="right" (click)="addEmployee()"></button>
+                                    </div>
+                                    <div class="p-col-3" *ngIf="isUpdating">
+                                        <button pButton type="submit" label="Update" class="ui-button-raised"
+                                            icon="pi pi-check" iconPos="right" (click)="updateEmployee()"></button>
+                                    </div>
+                                    <div class="p-col-3">
+                                        <button pButton type="button" label="Cancel" class="ui-button-raised"
+                                            (click)="cancelModification()"></button>
+                                    </div>
+                                </div>
+                            </p-footer>
+                            
+                    </form>
+                </div>
+            </p-dialog>
+        </p-panel>
+
+
+    </div>
+</div>

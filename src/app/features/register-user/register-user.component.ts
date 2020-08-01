@@ -52,7 +52,6 @@ export class RegisterUserComponent implements OnInit {
     //subscribe to the service to get the response
     this.userService.addParent(parent).subscribe(
       (data: Parent) => {
-        console.log(data);
         
         if(data) {
           this.router.navigate(['/login']);

@@ -3,10 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from 'src/app/common/gaurds/auth.gaurd';
 import { LayoutComponent } from 'src/app/layout/layout.component';
-import { TeachersComponent } from './features/teachers/teachers.component';
-import { DashboardModule } from './features/dashboard/dashboard.module';
-import { ParentsModule } from './features/parents/parents.module';
-import { IncidentsModule } from './features/incidents/incidents.module';
 
 const appRoutes: Routes = [
     {
@@ -49,6 +45,15 @@ const appRoutes: Routes = [
         {
             path: 'incidents',
             loadChildren: () => import('src/app/features/incidents/incidents.module').then(m => m.IncidentsModule),
+            canActivate: [AuthGuard]
+        }]
+    },
+    {
+        path: 'admin',
+        component: LayoutComponent,
+        children: [{
+            path: 'dashboard',
+            loadChildren: () => import('src/app/features/admin/admin.module').then(m => m.AdminModule),
             canActivate: [AuthGuard]
         }]
     },

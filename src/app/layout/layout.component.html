@@ -1,4 +1,4 @@
-
+<body>
 <!-- App Header-->
 
 <div class="ng-header">
@@ -17,9 +17,10 @@
 <div class="ng-content">
   <p-sidebar [visible]="true" position="left" [showCloseIcon]="false" styleClass="np-menubar" [modal]="false">
     <ul class="np-menu">
+      <li><a class="image-logo">&nbsp;</a></li>
         <li *ngFor="let menu of items">
             <a (click)="handleMenuItemClick(menu)" [ngClass]="{'active': selectedItem == menu.label}">
-                {{menu.label}}
+              <i class="{{menu.icon}}"></i> {{menu.label}}
             </a>
         </li>
     </ul>
@@ -28,3 +29,5 @@
 
   <router-outlet></router-outlet>
 </div>
+
+</body>

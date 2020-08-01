@@ -1,4 +1,7 @@
 
+import { Address } from './address.model';
+import { Modification } from './modification.model';
+
 export class User {
     constructor() {
         this.id = null;
@@ -15,4 +18,6 @@ export class User {
     password: string;
     email: string;
     role: string;
+    address: Address;
+    modification: Modification;
 }

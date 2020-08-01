@@ -7,12 +7,13 @@ import { map, catchError } from 'rxjs/operators';
 import { Employee } from 'src/app/common/models/employee.model';
 import { Student } from './../models/student.model';
 import { ExposureIncident } from '../models/incident.model';
+import { School } from '../models/school.model';
 
 @Injectable({
     providedIn: 'root',
 })
 export class UserDataService {
-
+    
     constructor(private httpClient: HttpClient) {
     }
 
@@ -38,7 +39,7 @@ export class UserDataService {
     }
 
     addIncident(incident: ExposureIncident): Observable<ExposureIncident> {
-      return this.httpClient.post<ExposureIncident>(environment.employees + "/exposures/", incident, {
+      return this.httpClient.post<ExposureIncident>(environment.exposures, incident, {
         headers: this.corsHeaders
       })
         .pipe(
@@ -101,7 +102,7 @@ export class UserDataService {
     }
 
     getExposuresForStudents(studentIds: number[]): Observable<ExposureIncident[]> {
-      let url = environment.employees + "/exposures/students"
+      let url = environment.exposures + "/students"
       return this.httpClient.post<ExposureIncident[]>(url, studentIds, {
         headers: this.corsHeaders
       })
@@ -109,6 +110,17 @@ export class UserDataService {
         map(response => {return response}),
         catchError(this.handleError)
       );
+    }
+
+    updateExposure(exposureToUpdate: ExposureIncident)  {
+     return this.httpClient.put<ExposureIncident>(environment.exposures, exposureToUpdate, {
+      headers: this.corsHeaders
+     })
+      .pipe(
+        map(response => {return response}),
+        catchError(this.handleError)
+      );
+   
     }
 
     public addStudent(student: Student) : Observable<Student> {
@@ -130,6 +142,7 @@ export class UserDataService {
           catchError(this.handleError)
         );
     }
+    
 
     //delete takes Id and can't pass request body
     deleteStudent(student: Student) {
@@ -140,6 +153,56 @@ export class UserDataService {
           map(response => {return response}),
           catchError(this.handleError)
         );
+    }
+
+    getAllEmployees() {
+      return this.httpClient.get<Employee[]>(environment.employees, {
+        headers: this.corsHeaders
+      })
+      .pipe(
+        map(response => {return response}),
+        catchError(this.handleError)
+      );
+    }
+
+    modifyEmployee(operation: string, employee: Employee): Observable<any> {
+      if(operation == 'add') {
+        return this.httpClient.post<Employee>(environment.employees, employee, {
+          headers: this.corsHeaders
+        })
+          .pipe(
+            map(response => {return response}),
+            catchError(this.handleError)
+          );
+
+      } else if(operation == 'update') {
+        return this.httpClient.put<Employee>(environment.employees, employee, {
+          headers: this.corsHeaders
+        })
+          .pipe(
+            map(response => {return response}),
+            catchError(this.handleError)
+          );
+
+      } else if(operation == "delete") {
+        return this.httpClient.delete<Boolean>(environment.employees + "/" + employee.id, {
+          headers: this.corsHeaders
+        })
+          .pipe(
+            map(response => {return response}),
+            catchError(this.handleError)
+          );
+      }
+    }
+
+    getAllSchools(): Observable<School[]> {
+      return this.httpClient.get<School[]>(environment.schools, {
+        headers: this.corsHeaders
+      })
+      .pipe(
+        map(response => {return response}),
+        catchError(this.handleError)
+      );
     }
 
     /**

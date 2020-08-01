@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { UserDataService } from 'src/app/common/services/user-data.service';
 import { ToastService } from 'src/app/common/services/toast.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -9,7 +9,9 @@ import { User } from 'src/app/common/models/user.model';
 @Component({
   selector: 'app-login',
   templateUrl: 'login.component.html',
-  styleUrls: ['login.component.css']
+  styleUrls: ['login.component.css'],
+  encapsulation: ViewEncapsulation.None
+ 
 })
 export class LoginComponent implements OnInit {
 
@@ -40,13 +42,15 @@ export class LoginComponent implements OnInit {
             this.router.navigateByUrl("/parent/dashboard");
           } else if(user.role == 'TEACHER') {
             this.router.navigateByUrl("/teachers/dashboard");
+          } else if(user.role == 'ADMIN') {
+            this.router.navigateByUrl("/admin/dashboard");
           }
 
         }
       }, 
       (error: HttpErrorResponse) => {
         this.isError = true;
-        this.toastService.addSingle("error", "", "Error while logging in.");
+        this.toastService.addSingle("error", "", "Error logging in. " + error.message);
       }
     );
 

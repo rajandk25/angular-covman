@@ -25,7 +25,6 @@ export class TeachersComponent implements OnInit {
     let loggedInUser = this.loggedUserService.loggedInUser();
 
     this.userDataService.getEmployeeByUserId(loggedInUser.id).subscribe((teacher: Employee) => {
-      console.log(teacher);
 
       //if teacher exists, then get their students
       if(teacher) {

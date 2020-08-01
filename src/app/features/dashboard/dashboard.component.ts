@@ -62,8 +62,6 @@ export class DashboardComponent implements OnInit {
     this.loggedInUser = this.loggedUserService.loggedInUser();
     this.role = this.loggedInUser.role;
 
-    console.log("logged in user " + this.loggedInUser);
-
     if(this.user) {
       if(this.role=='PARENT') {
         this.canAddStudent = true;
@@ -196,7 +194,6 @@ export class DashboardComponent implements OnInit {
     //get the student from existin Student [] whose check In just happened.
     //Update this student in the array
     let existingStudent: Student = this.students.filter(std => std.id === this.studentToCheckIn.id)[0];
-    console.log("existing: " + existingStudent);
 
     //if we found the student in existing (this is just double check to make sure we are on correct student)
     if(existingStudent.id == this.studentToCheckIn.id) {
@@ -213,8 +210,6 @@ export class DashboardComponent implements OnInit {
           //update students status
           this.updateStudentEligibility(existingStudent);
           this.isCheckingIn = false;
-
-          console.log("Updated Student: " + existingStudent);
         }
       });
     }
@@ -246,7 +241,6 @@ export class DashboardComponent implements OnInit {
 
       //update admittance based on the student symptom data
       if(!student.symptomAnswers) {
-        console.log("Not checked in yet");
         student.isAdmittable = false;
         this.needsAttention = true;
       }
@@ -254,10 +248,8 @@ export class DashboardComponent implements OnInit {
       else {
         let todayCheckin: SymptomAnswers = student.symptomAnswers;
         for(let symptom of todayCheckin.symptomAnswer) {
-          console.log("y/n" + symptom.yesOrNo);
           if(symptom.yesOrNo) {
             if(symptom.symptomQuestion && symptom.symptomQuestion.description !== 'No Symptoms') {
-              console.log("is Admittable" + false);
               student.isAdmittable = false;
               this.needsAttention = true;
             }

@@ -12,6 +12,8 @@ export const environment = {
   questions: 'http://localhost:8090/covman/symptoms/questions',
   checkIn: 'http://localhost:8090/covman/symptoms/checkIn/',
   employees: 'http://localhost:8090/covman/employees',
+  exposures: 'http://localhost:8090/covman/exposures',
+  schools: 'http://localhost:8090/covman/schools'
 };
 
 /*

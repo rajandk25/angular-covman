@@ -4,10 +4,7 @@ import { Employee } from 'src/app/common/models/employee.model';
 @Injectable({
     providedIn: 'root',
 })
-/**
- * employee service
- */
-export class EmployeeDataService {
+export class AdminDataService {
     getEmployeeList(): Employee[] {
         return [
         ];

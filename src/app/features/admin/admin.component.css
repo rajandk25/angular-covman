@@ -1,0 +1,12 @@
+.big-bold {
+    font-size: 16px;
+    font-weight: bolder;
+}
+
+.td-center {
+    text-align: center;
+}
+
+.mydialog {
+    min-height: 200px;
+}
